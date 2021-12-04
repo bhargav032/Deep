@@ -1,0 +1,127 @@
+<!-- include:: head -->
+<?php include '../include/head.php'; ?>
+
+<!-- Start :: Script -->
+
+<?php
+
+// Check if form is submitted for user update, then redirect to homepage after update
+if (isset($_POST['update'])) {
+	$id = $_POST['id'];
+	$material_name = $_POST['material_name'];
+	$material_type = $_POST['material_type'];
+	$material_qty = $_POST['material_qty'];
+
+
+	// update user data
+	$sql = "UPDATE inventory SET `material_name`='$material_name',`material_type`='$material_type',`material_qty`='$material_qty' WHERE `id`=$id"; 
+	$result = mysqli_query($connection, $sql);
+
+	// Redirect to homepage to display updated user in list
+	header("Location: inventory_list.php");
+}
+// Display selected user data based on id
+// Getting id from url
+$id = $_GET['id'];
+
+// Fetech user data based on id
+$sql = "SELECT * FROM inventory WHERE id=$id";
+$result = mysqli_query($connection, $sql);
+
+while($material_data = mysqli_fetch_array($result))
+{
+	$material_name = $material_data['material_name'];
+	$material_type = $material_data['material_type'];
+	$material_qty = $material_data['material_qty'];
+}
+?>
+
+
+
+<!-- End :: Script -->
+
+
+
+<title>Edit Material</title>
+<meta name="description" content="">
+
+<!-- include:: header -->
+<?php include '../include/header.php'; ?>
+
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<!--begin::Portlet-->
+			<div class="kt-portlet" id="kt_page_portlet">
+				<div class="kt-portlet__head kt-portlet__head--lg">
+					<div class="kt-portlet__head-label">
+						<h3 class="kt-portlet__head-title">Edit Material : <?php echo $material_name; ?></h3>
+					</div>
+
+					<div class="kt-portlet__head-toolbar">
+						<a href="inventory_list.php" class="btn btn-secondary kt-margin-r-10">
+							<i class="la la-arrow-left"></i>
+							<span class="kt-hidden-mobile">Back</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="kt-portlet__body">
+					<div class="row">
+						<div class="col-xl-2"></div>
+						<div class="col-xl-8">
+							<div class="kt-section kt-section--first">
+								<div class="kt-section__body">
+									<h3 class="kt-section__title kt-section__title-lg">Material</h3>
+									<form class="kt-form" method="post" action="inventory_list.php">
+										<div class="form-group row">
+											<label class="col-3 col-form-label">Material Name</label>
+											<div class="col-9">
+												<input class="form-control" type="text" placeholder="Material Name" name="material_name" value=<?php echo $material_name; ?>>
+											</div>
+
+										</div>
+
+										<div class="form-group row">
+											<label class="col-3 col-form-label">Material type</label>
+											<div class="col-9">
+												<input class="form-control" type="text" placeholder="Material Type" name="material_type" value=<?php echo $material_type; ?>>
+											</div>
+
+										</div>
+
+										<div class="form-group row">
+											<label class="col-3 col-form-label">Material Name</label>
+											<div class="col-9">
+												<input class="form-control" type="text" placeholder="Material Name" name="material_name" value=<?php echo $material_qty; ?>>
+											</div>
+
+										</div>
+
+										<div class="form-group btn-group">
+											<input type="hidden" name="id" value=<?php echo $_GET['id']; ?>>
+											<button type="submit" class="btn btn-primary" name="update">
+												<i class="la la-check"></i>
+												<span class="kt-hidden-mobile">Update</span>
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-2"></div>
+					</div>
+				</div>
+			</div>
+			<!--end::Portlet-->
+		</div>
+	</div>
+</div>
+<!-- end:: Content -->
+</div>
+
+
+<!-- include:: footer -->
+<?php include '../include/footer.php'; ?>
